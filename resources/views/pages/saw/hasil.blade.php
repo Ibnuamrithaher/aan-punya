@@ -39,14 +39,14 @@
                         @foreach ($alternatif as $item)
                         <tr>
                             @foreach ($category as $key1 => $value1)
-                            @if (empty($item->crips[$key1]))
-                                <td>0</td>
-                            @else
+                                @if (empty($item->crips[$key1]))
+                                    <td>0</td>
+                                @else
                                 <td>{{ $item->crips[$key1]->nilai }}</td>
-                            @endif    
+                                @endif
                             @endforeach
                         </tr>
-                        @endforeach      
+                        @endforeach
                     </tbody>
                 </table>
                 <br>
@@ -63,7 +63,7 @@
                             @endif
                             @endforeach
                         </tr>
-                        @endforeach      
+                        @endforeach
                     </tbody>
                 </table>
                 <br>
@@ -82,33 +82,34 @@
                             $max = max($hasil);
                             $min = min($hasil);
                         @endphp
-                        @foreach ($alternatif as $key => $item)
-                        @if ($hasil[$key] == $max)
-                            <tr style="background: greenyellow">
-                                <td>{{ $key+1 }}</td>
-                                <td>{{ $item->kode_alternatif }}</td>
-                                <td>{{ $item->nama_alternatif }}</td>
-                                <td >{{ $hasil[$key] }}</td>                        
-                            </tr>
-                        @elseif($hasil[$key] == $min)
-                            <tr style="background: #DFD7BF">
-                                <td>{{ $key+1 }}</td>
-                                <td>{{ $item->kode_alternatif }}</td>
-                                <td>{{ $item->nama_alternatif }}</td>
-                                <td >{{ $hasil[$key] }}</td>                        
-                            </tr>
-                        @else
-                            <tr>
-                                <td>{{ $key+1 }}</td>
-                                <td>{{ $item->kode_alternatif }}</td>
-                                <td>{{ $item->nama_alternatif }}</td>
-                                <td >{{ $hasil[$key] }}</td>                        
-                            </tr>
-                        @endif
-                        @endforeach       
+                        @foreach ($alternatif_array as $key => $item)
+                            @if ($item['hasilSaw'] == $max)
+                                <tr style="background: greenyellow">
+                                    <td>{{ $key+1 }}</td>
+                                    <td>{{ $item['kode_alternatif'] }}</td>
+                                    <td>{{ $item['nama_alternatif'] }}</td>
+                                    <td>{{ $item['hasilSaw'] }}</td>
+                                </tr>
+                            @elseif($item['hasilSaw'] == $min)
+                                <tr style="background: #DFD7BF">
+                                    <td>{{ $key+1 }}</td>
+                                    <td>{{ $item['kode_alternatif'] }}</td>
+                                    <td>{{ $item['nama_alternatif'] }}</td>
+                                    <td>{{ $item['hasilSaw'] }}</td>
+                                </tr>
+                            @else
+                                <tr>
+                                    <td>{{ $key+1 }}</td>
+                                    <td>{{ $item['kode_alternatif'] }}</td>
+                                    <td>{{ $item['nama_alternatif'] }}</td>
+                                    <td>{{ $item['hasilSaw'] }}</td>
+                                    {{-- <td >{{ $hasil[$key] }}</td> --}}
+                                </tr>
+                            @endif
+                        @endforeach
                     </tbody>
                 </table>
-                
+
             </div>
         </div>
     </div>
@@ -120,7 +121,7 @@
     // Set new default font family and font color to mimic Bootstrap's default styling
     Chart.defaults.global.defaultFontFamily = 'Nunito', '-apple-system,system-ui,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif';
     Chart.defaults.global.defaultFontColor = '#858796';
-    
+
     function number_format(number, decimals, dec_point, thousands_sep) {
       // *     example: number_format(1234.56, 2, ',', ' ');
       // *     return: '1 234,56'
@@ -145,7 +146,7 @@
       }
       return s.join(dec);
     }
-    
+
     // Area Chart Example
     var ctx = document.getElementById("myAreaChartHasil");
     var myLineChart = new Chart(ctx, {

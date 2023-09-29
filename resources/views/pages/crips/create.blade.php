@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @push('css')
-    
+
 @endpush
 @section('content')
 <!-- Begin Page Content -->
@@ -14,6 +14,10 @@
                     <option value="{{ $item->id }}">{{ $item->kode_category }}</option>
                 @endforeach
             </select>
+        </div>
+        <div class="form-row">
+            <label for="nama_alternatif">Nama Alternatif</label>
+            <input type="text" name="nama_alternatif" class="form-control" id="nama_alternatif" placeholder="Nama Alternatif" autocomplete="off" required>
         </div>
         <div class="form-row">
             <label for="nama_crips">Nama Crips / Nilai Kriteria</label>

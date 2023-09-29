@@ -46,7 +46,7 @@ class SawController extends Controller
         $alternatif = Alternatif::all();
         $category = Category::all();
         $cripts = Crips::all();
-        
+
         //dd(Alternatif::with('crips')->get());
         $Matrix_afinitas = [];
         $max = [];
@@ -65,15 +65,15 @@ class SawController extends Controller
                 }
             }
         }
-        
-        
+
+
         //Mencari Nilai Min Dan Max
         foreach ($category as $key => $value) {
             # code...
             $max[$key] = 0;
             $min[$key] = 999999999999999999999999999999999999999999999999999999999999999999999999;
         }
-        
+
         foreach ($category as $key => $value) {
             # code...
             foreach ($alternatif as $key1 => $value1) {
@@ -85,16 +85,16 @@ class SawController extends Controller
                     if($max[$key] <= $value1->crips[$key]->nilai){
                         $max[$key] = $value1->crips[$key]->nilai;
                     }
-                        
+
                     if($min[$key] >= $value1->crips[$key]->nilai){
                         $min[$key] = $value1->crips[$key]->nilai;
                     }
-                }    
+                }
             }
-            
+
         }
 
-        
+
         //return $Matrix_afinitas;
         foreach ($alternatif as $key => $value) {
             # code...
@@ -110,9 +110,9 @@ class SawController extends Controller
                     }elseif ($value1->atribut == 'Cost') {
                         # code...
                         $Matrix_R[$key][$key1] = $min[$key1]/$value->crips[$key1]->nilai;
-                    }   
+                    }
                 }
-                
+
             }
         }
         //dd($Matrix_R);
@@ -131,17 +131,37 @@ class SawController extends Controller
                     continue;
                 }else{
                     $hasil[$key] += ($Matrix_R[$key][$key1]*$value1->nilai_bobot);
+                    $value->hasilSaw = $hasil[$key];
                 }
-                
+
             }
-            
+
         }
-        
+
+        $alternatif_array = $alternatif->toArray();
+        // Mengambil nilai 'hasilSaw' dari setiap array
+        $hasilSaw = array_column($alternatif_array, 'hasilSaw');
+
+        // Mengurutkan array berdasarkan 'hasilSaw' dari yang terbesar ke terkecil
+        array_multisort($hasilSaw, SORT_DESC, $alternatif_array);
+
+        // Hasilnya: array $data sekarang diurutkan berdasarkan 'hasilSaw' dari terbesar ke terkecil
+        // print_r($alternatif);
+        // dd($alternatif);
+
+        // usort($alternatif, function($a, $b) {
+        //     return $b['hasilSaw'] - $a['hasilSaw'];
+        // });
+        // dd($arrayAlternatif);
+        // print_r($arrayAlternatif);
+        // dd($alternatif->orderBy('id', 'desc'));
+
+        // dd($hasil, $alternatif);
         //dd($Matrix_R);
         //return max($hasil);
 
         //return $data;
         //dd($Matrix_R);
-        return view('pages.saw.hasil',compact('alternatif','category','Matrix_R','hasil'));
+        return view('pages.saw.hasil',compact('alternatif','category','Matrix_R','hasil','alternatif_array'));
     }
 }

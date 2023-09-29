@@ -15,7 +15,7 @@ class CategoryController extends Controller
     public function index(Request $request)
     {
         if($request->ajax()){
-            $data = Category::latest()->get();
+            $data = Category::get();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -121,7 +121,7 @@ class CategoryController extends Controller
         //
         $category->delete();
         // $category->crips()->delete();
-        return redirect()->route('category.index')->with('succes','Deleted Data Succesfully');    
-  
+        return redirect()->route('category.index')->with('succes','Deleted Data Succesfully');
+
     }
 }

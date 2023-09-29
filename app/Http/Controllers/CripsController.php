@@ -19,7 +19,7 @@ class CripsController extends Controller
         // $data = Crips::latest()->get();
         // dd($data[8]->category->nama_category);
         if($request->ajax()){
-            $data = Crips::latest()->get();
+            $data = Crips::get();
             return Datatables::of($data)
                     ->addIndexColumn()
                     ->addColumn('action', function($row){
@@ -64,6 +64,7 @@ class CripsController extends Controller
         //
         $crips = Crips::create([
             'category_id' => $request->category,
+            'nama_alternatif' => $request->nama_alternatif,
             'nama_crips' => $request->nama_crips,
             'nilai'   => $request->nilai,
         ]);
@@ -108,6 +109,7 @@ class CripsController extends Controller
         //
         $crips = Crips::find($id);
         $crips->category_id = $request->category;
+        $crips->nama_alternatif = $request->nama_alternatif;
         $crips->nama_crips = $request->nama_crips;
         $crips->nilai = $request->nilai;
         $crips->save();
