@@ -1,6 +1,6 @@
 @extends('layouts.app')
 @push('css')
-    
+
 @endpush
 @section('content')
 <!-- Begin Page Content -->
@@ -17,11 +17,11 @@
                 <input type="text" name="nama_alternatif" class="form-control" id="inputAddress" placeholder="Nama" autocomplete="off" required>
             </div>
         </div>
-        <div class="form-row">
+        <div class="form-row" hidden>
             @foreach ($category as $key => $item)
                 <div class="form-group col-md-6">
                 <label for="category">{{ $item->nama_category }}</label>
-                <select id="category" name="category[]" class="form-control" required autocomplete="off">
+                <select id="category" name="category[]" class="form-control" autocomplete="off">
                     @foreach ($item->crips as $key1 => $item1)
                         <option value="{{ $item1->id }}" selected>{{ $item1->nama_crips }}</option>
                     @endforeach

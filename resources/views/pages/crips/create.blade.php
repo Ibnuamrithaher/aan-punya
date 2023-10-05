@@ -16,12 +16,17 @@
             </select>
         </div>
         <div class="form-row">
-            <label for="nama_alternatif">Nama Alternatif</label>
-            <input type="text" name="nama_alternatif" class="form-control" id="nama_alternatif" placeholder="Nama Alternatif" autocomplete="off" required>
+            <label for="nama_alternatif">Kode Alternatif</label>
+            <select name="nama_alternatif" id="nama_alternatif" class="form-control" required autocomplete="off">
+                @foreach ($alternatif as $item)
+                    <option value="{{ $item->id }}">{{ $item->nama_alternatif }}</option>
+                @endforeach
+            </select>
+            {{-- <input type="text" name="nama_alternatif" class="form-control" id="nama_alternatif" placeholder="Nama Alternatif" autocomplete="off" required> --}}
         </div>
         <div class="form-row">
             <label for="nama_crips">Nama Crips / Nilai Kriteria</label>
-            <input type="text" name="nama_crips" class="form-control" id="inputAddress" placeholder="nama" autocomplete="off" required>
+            <input type="text" name="nama_crips" class="form-control" id="inputAddress" placeholder="nama/nilai" autocomplete="off" required>
         </div>
         <div class="form-row">
             <label for="nilai">Nilai</label>

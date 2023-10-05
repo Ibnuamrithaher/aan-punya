@@ -10,6 +10,7 @@ class Crips extends Model
     use HasFactory;
     protected $table = "crips";
     protected $fillable = [
+        'nama_alternatif',
         'category_id',
         'nama_crips',
         'nilai',

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Alternatif;
 use App\Models\Category;
 use App\Models\Crips;
 use Illuminate\Http\Request;
@@ -18,10 +19,19 @@ class CripsController extends Controller
         //
         // $data = Crips::latest()->get();
         // dd($data[8]->category->nama_category);
+        $data = Crips::orderBy('category_id', 'asc')->get();
+
         if($request->ajax()){
-            $data = Crips::get();
             return Datatables::of($data)
                     ->addIndexColumn()
+                    ->addColumn('nama_alternatif',function($row){
+                        $name = "";
+                        $alternatif = Alternatif::find($row->nama_alternatif);
+                        if ($alternatif) {
+                            $name = $alternatif->nama_alternatif;
+                        }
+                        return $name;
+                    })
                     ->addColumn('action', function($row){
                         $btn = '
                         <form action="'. route('crips.destroy', $row->id) .'" method="POST">
@@ -50,7 +60,8 @@ class CripsController extends Controller
     {
         //
         $category = Category::all();
-        return view('pages.crips.create',compact('category'));
+        $alternatif = Alternatif::all();
+        return view('pages.crips.create',compact('category','alternatif'));
     }
 
     /**
@@ -61,13 +72,17 @@ class CripsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+
         $crips = Crips::create([
             'category_id' => $request->category,
             'nama_alternatif' => $request->nama_alternatif,
             'nama_crips' => $request->nama_crips,
             'nilai'   => $request->nilai,
         ]);
+        $alternatif = Alternatif::find($request->nama_alternatif);
+        // $alternatif->crips()->attach(1,['hasil' => 0]);
+        $alternatif->crips()->attach($crips->id,['hasil' => 0]);
+
         return redirect()->route('crips.index')->with('succes','Insert Data Succesfully');
     }
 
@@ -94,7 +109,8 @@ class CripsController extends Controller
         //
         $category = Category::all();
         $crips = Crips::find($id);
-        return view('pages.crips.update',compact('category','crips'));
+        $alternatif = Alternatif::all();
+        return view('pages.crips.update',compact('category','crips','alternatif'));
     }
 
     /**
@@ -108,11 +124,27 @@ class CripsController extends Controller
     {
         //
         $crips = Crips::find($id);
+
+        $alternatif = Alternatif::findOrFail($crips->nama_alternatif);
+        $alternatif->crips()->detach([$id]);
+
+        $alternatif = Alternatif::find($request->nama_alternatif);
+
+        foreach ($alternatif->crips as $key => $value) {
+            if ($value->id != $crips->nama_alternatif) {
+                $crips_new[$value->id] = array('hasil' => 0);
+            }
+        }
+
         $crips->category_id = $request->category;
         $crips->nama_alternatif = $request->nama_alternatif;
         $crips->nama_crips = $request->nama_crips;
         $crips->nilai = $request->nilai;
         $crips->save();
+        // array_push($crips_new,$request->nama_crips);
+        $crips_new[$crips->id] = array('hasil' => 0);
+
+        $alternatif->crips()->sync($crips_new,true);
 
         return redirect()->route('crips.index')->with('succes','Update Data Succesfully');
     }

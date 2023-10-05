@@ -25,7 +25,7 @@ class AlternatifController extends Controller
 
         //dd($alternatifs[0]->crips);
         //dd($alternatifs[0]->crips[0]->pivot->hasil);
-        
+
         // return Datatables::of($alternatifs)
         //             ->addIndexColumn()
         //             ->addColumn('action', function($row){
@@ -37,7 +37,7 @@ class AlternatifController extends Controller
         //                 return Category::all();
         //             })
         //             ->rawColumns(['action'])->toJson();
-        
+
         if ($request->ajax()) {
             $data = Alternatif::latest()->get();
             return Datatables::of($data)
@@ -53,7 +53,7 @@ class AlternatifController extends Controller
                     ->rawColumns(['action','C'])
                     ->make(true);
         }
-      
+
         //return view('book',compact('books'));
         return view('pages.alternatif.index',compact('alternatifs','category'));
     }
@@ -80,19 +80,19 @@ class AlternatifController extends Controller
     public function store(Request $request)
     {
         //
-        $category = [];
-        foreach ($request->category as $key => $value) {
-            # code...
-            $category[] = $value;
-        }
+        // $category = [];
+        // foreach ($request->category as $key => $value) {
+        //     # code...
+        //     $category[] = $value;
+        // }
         // return $request->category;
         // dd($category);
         $alternatif = Alternatif::create([
             'kode_alternatif' => $request->kode_alternatif,
             'nama_alternatif' => $request->nama_alternatif,
         ]);
-        
-        $alternatif->crips()->attach($request->category,['hasil' => 0]);
+
+        // $alternatif->crips()->attach($request->category,['hasil' => 0]);
         return redirect()->route('alternatif.index')->with('succes','Insert Data Succesfully');
     }
 
@@ -134,15 +134,15 @@ class AlternatifController extends Controller
             'kode_alternatif' => $request->kode_alternatif,
             'nama_alternatif' => $request->nama_alternatif,
         ]);
-        
 
-        foreach ($request->category as $key => $value) {
-            # code...
-            $category[$value] = array('hasil' => 0);
-        }
+
+        // foreach ($request->category as $key => $value) {
+        //     # code...
+        //     $category[$value] = array('hasil' => 0);
+        // }
 
         //dd($category);
-        $alternatif->crips()->sync($category,true);
+        // $alternatif->crips()->sync($category,true);
         return redirect()->route('alternatif.index')->with('succes','Update Data Succesfully');
     }
 

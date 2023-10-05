@@ -18,11 +18,15 @@
         </div>
         <div class="form-row">
             <label for="nama_alternatif">Nama Alternatif</label>
-            <input type="text" value="{{ $crips->nama_alternatif }}" name="nama_alternatif"  class="form-control" id="nama_alternatif" placeholder="Nilai alternatif" autocomplete="off" required>
+            <select name="nama_alternatif" id="nama_alternatif" class="form-control" required autocomplete="off">
+                @foreach ($alternatif as $item)
+                    <option value="{{ $item->id }}">{{ $item->nama_alternatif }}</option>
+                @endforeach
+            </select>
         </div>
         <div class="form-row">
             <label for="nama_crips">Nama Crips / Nilai Kriteria</label>
-            <input type="text" value="{{ $crips->nama_crips }}" name="nama_crips"  class="form-control" id="inputAddress" placeholder="nama" autocomplete="off" required>
+            <input type="text" value="{{ $crips->nama_crips }}" name="nama_crips"  class="form-control" id="inputAddress" placeholder="nama/nilai" autocomplete="off" required>
         </div>
         <div class="form-row">
             <label for="nilai">Nilai</label>
