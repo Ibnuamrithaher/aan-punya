@@ -15,6 +15,7 @@
                 <!-- Nested Row within Card Body -->
                 <div class="row">
                     <div class="col-lg-6 d-none d-lg-block bg-login-image">
+                        <div></div>
                         <img src="{{ asset('logo_foging.jpeg') }}" width="100%" height="100%" alt="">
                     </div>
                     <div class="col-lg-6">
